@@ -8,6 +8,7 @@ import mydataharbor.sink.exception.EsException;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
@@ -43,9 +44,10 @@ public class Es65xClient implements IEsClient {
 
   @Override
   public boolean checkIndexExist(String index) {
-    GetRequest getRequest = new GetRequest(index);
+    GetIndexRequest getIndexRequest = new GetIndexRequest();
+    getIndexRequest.indices(index);
     try {
-      return restHighLevelClient.exists(getRequest, RequestOptions.DEFAULT);
+      return restHighLevelClient.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
     } catch (IOException e) {
       throw new EsException("检查索引是否存在时发生异常！", e);
     }

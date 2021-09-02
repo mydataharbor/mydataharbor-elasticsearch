@@ -1,6 +1,6 @@
 package mydataharbor.plugin.es.sink;
 
-import mydataharbor.plugin.es.Es64xClient;
+import mydataharbor.plugin.es.Es60xClient;
 import mydataharbor.sink.AbstractEsSink;
 import mydataharbor.sink.EsSinkConfig;
 import mydataharbor.sink.es.IEsClient;
@@ -8,14 +8,14 @@ import mydataharbor.sink.es.IEsClient;
 /**
  * Created by xulang on 2021/7/27.
  */
-public class Es64xSink extends AbstractEsSink {
-  public Es64xSink(EsSinkConfig esSinkConfig) {
+public class Es60xSink extends AbstractEsSink {
+  public Es60xSink(EsSinkConfig esSinkConfig) {
     super(esSinkConfig);
   }
 
   @Override
   public IEsClient initEsClient(EsSinkConfig esSinkConfig) {
-    return new Es64xClient(esSinkConfig);
+    return new Es60xClient(esSinkConfig);
   }
 
   @Override

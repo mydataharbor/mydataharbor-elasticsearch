@@ -17,6 +17,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.GetIndexRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,9 +44,9 @@ public class Es77xClient implements IEsClient {
 
   @Override
   public boolean checkIndexExist(String index) {
-    GetRequest getRequest = new GetRequest(index);
+    GetIndexRequest getIndexRequest = new GetIndexRequest(index);
     try {
-      return restHighLevelClient.exists(getRequest, RequestOptions.DEFAULT);
+      return restHighLevelClient.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
     } catch (IOException e) {
       throw new EsException("检查索引是否存在时发生异常！", e);
     }

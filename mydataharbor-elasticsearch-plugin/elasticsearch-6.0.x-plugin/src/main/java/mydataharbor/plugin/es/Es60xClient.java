@@ -41,13 +41,13 @@ import static java.util.Collections.emptySet;
  * Created by xulang on 2021/7/27.
  */
 @Slf4j
-public class Es64xClient implements IEsClient {
+public class Es60xClient implements IEsClient {
 
   private RestHighLevelClient restHighLevelClient;
 
   private EsSinkConfig esSinkConfig;
 
-  public Es64xClient(EsSinkConfig esSinkConfig) {
+  public Es60xClient(EsSinkConfig esSinkConfig) {
     this.esSinkConfig = esSinkConfig;
     HttpHost[] httpHosts = esSinkConfig.getEsIpPort().stream().map(str -> new HttpHost(str.split(":")[0], Integer.parseInt(str.split(":")[1]))).toArray(HttpHost[]::new);
     this.restHighLevelClient = new RestHighLevelClient(RestClient.builder(httpHosts)
