@@ -7,6 +7,7 @@ import mydataharbor.sink.es.IEsClient;
 import mydataharbor.sink.exception.EsException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
@@ -15,11 +16,13 @@ import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
@@ -59,9 +62,13 @@ public class Es60xClient implements IEsClient {
 
   @Override
   public boolean checkIndexExist(String index) {
-    GetRequest getRequest = new GetRequest(index);
     try {
-      return restHighLevelClient.exists(getRequest);
+      Response response = restHighLevelClient.getLowLevelClient().performRequest(HttpHead.METHOD_NAME, index);
+      if (response.getStatusLine().getStatusCode() == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (IOException e) {
       throw new EsException("检查索引是否存在时发生异常！", e);
     }
