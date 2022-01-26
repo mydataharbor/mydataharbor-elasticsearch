@@ -1,4 +1,4 @@
-package mydataharbor.sink;
+package mydataharbor.elasticsearch.common.sink;
 
 import lombok.Data;
 import mydataharbor.classutil.classresolver.MyDataHarborMarker;

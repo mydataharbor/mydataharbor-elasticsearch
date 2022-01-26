@@ -21,5 +21,12 @@
 			<artifactId>elasticsearch-rest-high-level-client</artifactId>
 			<version>6.6.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.mydataharbor</groupId>
+			<artifactId>elasticsearch-plugin</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

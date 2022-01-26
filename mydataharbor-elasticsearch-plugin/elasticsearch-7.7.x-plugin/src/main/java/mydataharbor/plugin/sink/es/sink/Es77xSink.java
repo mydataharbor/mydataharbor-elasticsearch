@@ -1,22 +1,22 @@
 package mydataharbor.plugin.sink.es.sink;
 
 
+import mydataharbor.elasticsearch.common.sink.ElasticsearchSinkConfig;
 import mydataharbor.plugin.sink.es.Es77xClient;
 import mydataharbor.sink.AbstractEsSink;
-import mydataharbor.sink.EsSinkConfig;
 import mydataharbor.sink.es.IEsClient;
 
 /**
  * Created by xulang on 2021/7/27.
  */
 public class Es77xSink extends AbstractEsSink {
-  public Es77xSink(EsSinkConfig esSinkConfig) {
-    super(esSinkConfig);
+  public Es77xSink(ElasticsearchSinkConfig elasticsearchSinkConfig) {
+    super(elasticsearchSinkConfig);
   }
 
   @Override
-  public IEsClient initEsClient(EsSinkConfig esSinkConfig) {
-    return new Es77xClient(esSinkConfig);
+  public IEsClient initEsClient(ElasticsearchSinkConfig elasticsearchSinkConfig) {
+    return new Es77xClient(elasticsearchSinkConfig);
   }
 
   @Override

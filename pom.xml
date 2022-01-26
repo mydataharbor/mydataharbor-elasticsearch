@@ -20,6 +20,7 @@
   <modules>
     <module>mydataharbor-sink-es</module>
     <module>mydataharbor-elasticsearch-plugin</module>
+    <module>mydataharbor-elasticsearch-common</module>
   </modules>
 
 </project>
