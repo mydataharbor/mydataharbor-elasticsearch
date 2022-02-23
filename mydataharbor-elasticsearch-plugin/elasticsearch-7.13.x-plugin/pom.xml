@@ -1,25 +1,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.mydataharbor</groupId>
-		<artifactId>mydataharbor-elasticsearch-plugin</artifactId>
-		<version>1.1.0</version>
-	</parent>
-	<artifactId>elasticsearch-7.13.x-plugin</artifactId>
-	<description>elasticsearch-7.13.x 插件</description>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mydataharbor</groupId>
+    <artifactId>mydataharbor-elasticsearch-plugin</artifactId>
+    <version>1.1.0</version>
+  </parent>
+  <artifactId>elasticsearch-7.13.x-plugin</artifactId>
+  <description>elasticsearch-7.13.x 插件</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
-			<version>7.13.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>elasticsearch-rest-high-level-client</artifactId>
-			<version>7.13.4</version>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>7.13.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.elasticsearch.client</groupId>
+      <artifactId>elasticsearch-rest-high-level-client</artifactId>
+      <version>7.13.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.mydataharbor</groupId>
+      <artifactId>elasticsearch-plugin</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 </project>

@@ -1,67 +1,60 @@
 package mydataharbor.plugin.es;
 
 import lombok.extern.slf4j.Slf4j;
-import mydataharbor.sink.EsSinkConfig;
-import mydataharbor.sink.EsWriteReq;
+import mydataharbor.elasticsearch.common.sink.ElasticsearchSinkConfig;
+import mydataharbor.elasticsearch.common.sink.ElasticsearchSinkReq;
 import mydataharbor.sink.es.IEsClient;
 import mydataharbor.sink.exception.EsException;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
-import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.common.xcontent.XContentHelper;
-import org.elasticsearch.common.xcontent.XContentType;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.emptySet;
 
 /**
  * Created by xulang on 2021/7/27.
  */
 @Slf4j
-public class Es64xClient implements IEsClient {
+public class Es60xClient implements IEsClient {
 
   private RestHighLevelClient restHighLevelClient;
 
-  private EsSinkConfig esSinkConfig;
+  private ElasticsearchSinkConfig elasticsearchSinkConfig;
 
-  public Es64xClient(EsSinkConfig esSinkConfig) {
-    this.esSinkConfig = esSinkConfig;
-    HttpHost[] httpHosts = esSinkConfig.getEsIpPort().stream().map(str -> new HttpHost(str.split(":")[0], Integer.parseInt(str.split(":")[1]))).toArray(HttpHost[]::new);
+  public Es60xClient(ElasticsearchSinkConfig elasticsearchSinkConfig) {
+    this.elasticsearchSinkConfig = elasticsearchSinkConfig;
+    HttpHost[] httpHosts = elasticsearchSinkConfig.getEsIpPort().stream().map(str -> new HttpHost(str.split(":")[0], Integer.parseInt(str.split(":")[1]))).toArray(HttpHost[]::new);
     this.restHighLevelClient = new RestHighLevelClient(RestClient.builder(httpHosts)
       .setRequestConfigCallback(requestConfigBuilder -> requestConfigBuilder
-        .setConnectTimeout((int) esSinkConfig.getConnectTimeOut())
-        .setSocketTimeout((int) esSinkConfig.getSocketTimeOut()))
+        .setConnectTimeout((int) elasticsearchSinkConfig.getConnectTimeOut())
+        .setSocketTimeout((int) elasticsearchSinkConfig.getSocketTimeOut()))
       .setMaxRetryTimeoutMillis(10000));
   }
 
   @Override
   public boolean checkIndexExist(String index) {
-    GetRequest getRequest = new GetRequest(index);
     try {
-      return restHighLevelClient.exists(getRequest);
+      Response response = restHighLevelClient.getLowLevelClient().performRequest(HttpHead.METHOD_NAME, index);
+      if (response.getStatusLine().getStatusCode() == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (IOException e) {
       throw new EsException("检查索引是否存在时发生异常！", e);
     }
@@ -88,16 +81,16 @@ public class Es64xClient implements IEsClient {
   }
 
   @Override
-  public Object write(EsWriteReq esWriteReq) throws Exception {
-    switch (esWriteReq.getWriteType()) {
+  public Object write(ElasticsearchSinkReq elasticsearchSinkReq) throws Exception {
+    switch (elasticsearchSinkReq.getWriteType()) {
       case DELETE:
-        DeleteRequest deleteRequest = new DeleteRequest(esSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", esWriteReq.getKey());
+        DeleteRequest deleteRequest = new DeleteRequest(elasticsearchSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", elasticsearchSinkReq.getKey());
         return restHighLevelClient.delete(deleteRequest);
       case UPDATE:
-        UpdateRequest updateRequest = new UpdateRequest(esSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", esWriteReq.getKey()).doc(esWriteReq.getSource());
+        UpdateRequest updateRequest = new UpdateRequest(elasticsearchSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", elasticsearchSinkReq.getKey()).doc(elasticsearchSinkReq.getSource());
         return restHighLevelClient.update(updateRequest);
       case INDEX:
-        IndexRequest indexRequest = new IndexRequest(esSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", esWriteReq.getKey()).source(esWriteReq.getSource());
+        IndexRequest indexRequest = new IndexRequest(elasticsearchSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", elasticsearchSinkReq.getKey()).source(elasticsearchSinkReq.getSource());
         return restHighLevelClient.index(indexRequest);
       default:
         throw new RuntimeException("impossable!");
@@ -105,19 +98,19 @@ public class Es64xClient implements IEsClient {
   }
 
   @Override
-  public Object batchWrite(List<EsWriteReq> esWriteReqs) throws Exception {
+  public Object batchWrite(List<ElasticsearchSinkReq> elasticsearchSinkReqs) throws Exception {
     BulkRequest bulkRequest = new BulkRequest();
-    for (EsWriteReq esWriteReq : esWriteReqs) {
+    for (ElasticsearchSinkReq elasticsearchSinkReq : elasticsearchSinkReqs) {
       DocWriteRequest docWriteRequest = null;
-      switch (esWriteReq.getWriteType()) {
+      switch (elasticsearchSinkReq.getWriteType()) {
         case DELETE:
-          docWriteRequest = new DeleteRequest(esSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", esWriteReq.getKey());
+          docWriteRequest = new DeleteRequest(elasticsearchSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", elasticsearchSinkReq.getKey());
           break;
         case UPDATE:
-          docWriteRequest = new UpdateRequest(esSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", esWriteReq.getKey()).doc(esWriteReq.getSource());
+          docWriteRequest = new UpdateRequest(elasticsearchSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", elasticsearchSinkReq.getKey()).doc(elasticsearchSinkReq.getSource());
           break;
         case INDEX:
-          docWriteRequest = new IndexRequest(esSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", esWriteReq.getKey()).source(esWriteReq.getSource());
+          docWriteRequest = new IndexRequest(elasticsearchSinkConfig.getWriteIndexConfig().getIndexName(), "_doc", elasticsearchSinkReq.getKey()).source(elasticsearchSinkReq.getSource());
           break;
         default:
           throw new RuntimeException("impossable!");

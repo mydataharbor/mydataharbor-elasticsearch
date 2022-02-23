@@ -1,4 +1,4 @@
-package mydataharbor.sink;
+package mydataharbor.elasticsearch.common.sink;
 
 /**
  * Created by xulang on 2021/7/26.

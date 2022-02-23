@@ -1,4 +1,4 @@
-package mydataharbor.sink;
+package mydataharbor.elasticsearch.common.sink;
 
 import lombok.Data;
 import mydataharbor.classutil.classresolver.MyDataHarborMarker;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Data
 @MyDataHarborMarker(title = "Es写入器配置")
-public class EsSinkConfig {
+public class ElasticsearchSinkConfig {
 
   @MyDataHarborMarker(title = "es连接ip信息", des = "如：[127.0.0.1:9400,127.0.0.1:9500]")
   private List<String> esIpPort;

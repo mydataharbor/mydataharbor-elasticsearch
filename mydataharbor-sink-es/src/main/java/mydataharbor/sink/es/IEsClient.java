@@ -1,6 +1,7 @@
 package mydataharbor.sink.es;
 
-import mydataharbor.sink.EsWriteReq;
+
+import mydataharbor.elasticsearch.common.sink.ElasticsearchSinkReq;
 
 import java.util.List;
 import java.util.Map;
@@ -31,16 +32,16 @@ public interface IEsClient {
   /**
    * 单条写入
    *
-   * @param esWriteReq
+   * @param elasticsearchSinkReq
    */
-  Object write(EsWriteReq esWriteReq) throws Exception;
+  Object write(ElasticsearchSinkReq elasticsearchSinkReq) throws Exception;
 
   /**
    * 批量写入
    *
-   * @param esWriteReqs
+   * @param elasticsearchSinkReqs
    */
-  Object batchWrite(List<EsWriteReq> esWriteReqs) throws Exception;
+  Object batchWrite(List<ElasticsearchSinkReq> elasticsearchSinkReqs) throws Exception;
 
   /**
    * 关闭资源
