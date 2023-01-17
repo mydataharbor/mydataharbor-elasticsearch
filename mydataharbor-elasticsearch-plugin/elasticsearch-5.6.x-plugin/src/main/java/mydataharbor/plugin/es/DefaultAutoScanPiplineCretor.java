@@ -15,7 +15,7 @@ import java.util.Map;
 public class DefaultAutoScanPiplineCretor extends AbstractAutoScanPipelineCreator<Map<String, Object>, BaseSettingContext> implements ExtensionPoint {
   @Override
   public String scanPackage() {
-    return "mydataharbor";
+    return "mydataharbor.plugin.es";
   }
 
   @Override
@@ -25,7 +25,7 @@ public class DefaultAutoScanPiplineCretor extends AbstractAutoScanPipelineCreato
 
   @Override
   public IDataPipeline createPipeline(Map<String, Object> config, BaseSettingContext settingContext) throws Exception {
-    throw new RuntimeException("此创建器无法创建pipline");
+    throw new RuntimeException("此创建器无法创建pipeline");
   }
 
   @Override
