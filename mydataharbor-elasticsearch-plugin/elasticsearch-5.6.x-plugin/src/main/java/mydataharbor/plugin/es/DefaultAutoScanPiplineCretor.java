@@ -25,7 +25,7 @@ public class DefaultAutoScanPiplineCretor extends AbstractAutoScanPipelineCreato
 
   @Override
   public IDataPipeline createPipeline(Map<String, Object> config, BaseSettingContext settingContext) throws Exception {
-    throw new RuntimeException("此创建器无法创建pipline");
+    throw new RuntimeException("此创建器无法创建pipeline");
   }
 
   @Override
