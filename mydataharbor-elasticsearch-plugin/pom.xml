@@ -16,7 +16,7 @@
   <version>${revision}</version>
 
   <properties>
-    <revision>2.0.0</revision>
+    <revision>2.0.1</revision>
     <plugin.version>${project.version}</plugin.version>
     <plugin.group>elasticsearch</plugin.group>
     <plugin.group.logo>
