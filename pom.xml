@@ -4,21 +4,22 @@
   <parent>
     <groupId>com.mydataharbor</groupId>
     <artifactId>mydataharbor-plugin</artifactId>
-    <version>1.0.4</version>
+    <version>2.0.0</version>
   </parent>
   <artifactId>mydataharbor-elasticsearch</artifactId>
   <packaging>pom</packaging>
   <description>elasticsearch相关</description>
-  <version>1.1.0</version>
+  <version>${revision}</version>
 
   <properties>
+    <revision>2.0.0</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <modules>
-    <module>mydataharbor-sink-es</module>
+    <module>mydataharbor-elasticsearch-sink</module>
     <module>mydataharbor-elasticsearch-plugin</module>
     <module>mydataharbor-elasticsearch-common</module>
   </modules>

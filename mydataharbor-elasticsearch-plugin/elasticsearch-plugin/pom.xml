@@ -5,7 +5,7 @@
   <parent>
     <artifactId>mydataharbor-elasticsearch-plugin</artifactId>
     <groupId>com.mydataharbor</groupId>
-    <version>1.1.0</version>
+    <version>${revision}</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -24,15 +24,8 @@
   <dependencies>
     <dependency>
       <groupId>com.mydataharbor</groupId>
-      <artifactId>mydataharbor-elasticsearch-common</artifactId>
+      <artifactId>mydataharbor-elasticsearch-sink</artifactId>
       <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.mydataharbor</groupId>
-      <artifactId>mydataharbor-sink-es</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
