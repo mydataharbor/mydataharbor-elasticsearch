@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.mydataharbor</groupId>
 		<artifactId>mydataharbor-elasticsearch-plugin</artifactId>
-		<version>1.1.0</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>elasticsearch-6.7.x-plugin</artifactId>
 	<description>elasticsearch-6.7.x 插件</description>
@@ -22,11 +22,5 @@
 			<version>6.7.2</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.mydataharbor</groupId>
-			<artifactId>elasticsearch-plugin</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 </project>
