@@ -16,7 +16,7 @@ import org.pf4j.ExtensionPoint;
 public class DefaultAutoScanPiplineCretor extends AbstractAutoScanPipelineCreator<Map<String, Object>, BaseSettingContext> implements ExtensionPoint {
   @Override
   public String scanPackage() {
-    return "mydataharbor";
+    return "mydataharbor.plugin.es";
   }
 
   @Override
