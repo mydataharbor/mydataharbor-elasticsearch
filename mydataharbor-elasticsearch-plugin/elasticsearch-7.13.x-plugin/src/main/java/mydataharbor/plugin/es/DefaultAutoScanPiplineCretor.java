@@ -1,4 +1,4 @@
-package mydataharbor.plugin.sink.es;
+package mydataharbor.plugin.es;
 
 import mydataharbor.IDataPipeline;
 import mydataharbor.plugin.base.creator.AbstractAutoScanPipelineCreator;

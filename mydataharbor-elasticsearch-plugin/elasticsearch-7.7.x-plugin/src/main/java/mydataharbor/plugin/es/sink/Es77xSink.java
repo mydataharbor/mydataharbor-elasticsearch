@@ -1,26 +1,26 @@
-package mydataharbor.plugin.sink.es.sink;
+package mydataharbor.plugin.es.sink;
 
 
 import mydataharbor.elasticsearch.common.sink.ElasticsearchSinkConfig;
-import mydataharbor.plugin.sink.es.Es68xClient;
+import mydataharbor.plugin.es.Es77xClient;
 import mydataharbor.sink.AbstractEsSink;
 import mydataharbor.sink.es.IEsClient;
 
 /**
  * Created by xulang on 2021/7/27.
  */
-public class Es68xSink extends AbstractEsSink {
-  public Es68xSink(ElasticsearchSinkConfig elasticsearchSinkConfig) {
+public class Es77xSink extends AbstractEsSink {
+  public Es77xSink(ElasticsearchSinkConfig elasticsearchSinkConfig) {
     super(elasticsearchSinkConfig);
   }
 
   @Override
   public IEsClient initEsClient(ElasticsearchSinkConfig elasticsearchSinkConfig) {
-    return new Es68xClient(elasticsearchSinkConfig);
+    return new Es77xClient(elasticsearchSinkConfig);
   }
 
   @Override
   public String name() {
-    return "es6.8.x 版本的写入器";
+    return "es7.7.x 版本的写入器";
   }
 }

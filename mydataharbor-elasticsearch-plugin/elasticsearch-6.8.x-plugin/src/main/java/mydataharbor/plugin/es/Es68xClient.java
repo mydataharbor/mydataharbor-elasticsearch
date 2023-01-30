@@ -1,4 +1,4 @@
-package mydataharbor.plugin.sink.es;
+package mydataharbor.plugin.es;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,19 +26,20 @@ import java.util.Map;
  * Created by xulang on 2021/7/27.
  */
 @Slf4j
-public class Es77xClient implements IEsClient {
+public class Es68xClient implements IEsClient {
 
   private RestHighLevelClient restHighLevelClient;
 
   private ElasticsearchSinkConfig elasticsearchSinkConfig;
 
-  public Es77xClient(ElasticsearchSinkConfig elasticsearchSinkConfig) {
+  public Es68xClient(ElasticsearchSinkConfig elasticsearchSinkConfig) {
     this.elasticsearchSinkConfig = elasticsearchSinkConfig;
     HttpHost[] httpHosts = elasticsearchSinkConfig.getEsIpPort().stream().map(str -> new HttpHost(str.split(":")[0], Integer.parseInt(str.split(":")[1]))).toArray(HttpHost[]::new);
     this.restHighLevelClient = new RestHighLevelClient(RestClient.builder(httpHosts)
       .setRequestConfigCallback(requestConfigBuilder -> requestConfigBuilder
         .setConnectTimeout((int) elasticsearchSinkConfig.getConnectTimeOut())
-        .setSocketTimeout((int) elasticsearchSinkConfig.getSocketTimeOut())));
+        .setSocketTimeout((int) elasticsearchSinkConfig.getSocketTimeOut()))
+      .setMaxRetryTimeoutMillis(10000));
   }
 
   @Override

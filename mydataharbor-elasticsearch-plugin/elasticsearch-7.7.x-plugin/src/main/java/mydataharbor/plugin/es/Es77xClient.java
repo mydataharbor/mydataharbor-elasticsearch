@@ -1,4 +1,4 @@
-package mydataharbor.plugin.sink.es;
+package mydataharbor.plugin.es;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,6 @@ import mydataharbor.sink.es.IEsClient;
 import mydataharbor.sink.exception.EsException;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.DocWriteRequest;
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
@@ -16,6 +15,7 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.GetIndexRequest;
 
 import java.io.IOException;
@@ -26,13 +26,13 @@ import java.util.Map;
  * Created by xulang on 2021/7/27.
  */
 @Slf4j
-public class Es713xClient implements IEsClient {
+public class Es77xClient implements IEsClient {
 
   private RestHighLevelClient restHighLevelClient;
 
   private ElasticsearchSinkConfig elasticsearchSinkConfig;
 
-  public Es713xClient(ElasticsearchSinkConfig elasticsearchSinkConfig) {
+  public Es77xClient(ElasticsearchSinkConfig elasticsearchSinkConfig) {
     this.elasticsearchSinkConfig = elasticsearchSinkConfig;
     HttpHost[] httpHosts = elasticsearchSinkConfig.getEsIpPort().stream().map(str -> new HttpHost(str.split(":")[0], Integer.parseInt(str.split(":")[1]))).toArray(HttpHost[]::new);
     this.restHighLevelClient = new RestHighLevelClient(RestClient.builder(httpHosts)
@@ -55,7 +55,7 @@ public class Es713xClient implements IEsClient {
   public void createIndex(String index, Map settings, Map mapping) {
     CreateIndexRequest createIndexRequest = new CreateIndexRequest(index);
     createIndexRequest.settings(settings);
-    createIndexRequest.mapping("_doc", mapping);
+    createIndexRequest.mapping(mapping);
     try {
       restHighLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
     } catch (IOException e) {
